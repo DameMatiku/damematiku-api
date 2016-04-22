@@ -27,6 +27,37 @@ types:
                 }
               ]
 
+/search:
+  get:
+    queryParameters:
+      q:
+        description: Search query
+        type: string
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "type": "section",
+                  "id": 12,
+                  "title": "Section 1",
+                  "chapters": [
+                    {
+                      "id": 124,
+                      "title": "Some chapter"
+                    }
+                  ]
+                },
+                {
+                  "type": "chapter",
+                  "id": 123,
+                  "title": "Chapter about 'search query'"
+                }
+              ]
+
 /subjects/{subjectId}/sections:
   get:
     queryParameters:
@@ -51,36 +82,72 @@ types:
                   ]
                 }
               ]
-  /chapters/{chapterId}:
+/chapters/{chapterId}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 123,
+                "title": "Some chapter",
+                "description": "HTML description.",
+                "videos": [
+                  {
+                    "id": 153,
+                    "title": "Some chapter",
+                    "author": {
+                      "id": 1325,
+                      "name": "Lord Voldemort",
+                      "reputation": 10000,
+                      "avatarUrl": "http://someurl.com/img.png"
+                    },
+                    "youtubeId": "13kbnrfv01",
+                    "votes": -3,
+                    "myVote": "up"
+                  }
+                ],
+                "sponsor": {
+                  "name": "Some company",
+                  "logoUrl": "http://someurl.com/logo.png",
+                  "link": "http://someurl.com"
+                },
+                "nextChapter": {
+                  "id": 124,
+                  "title": "Another chapter"
+                },
+                "previousChapter": {
+                  "id": 125,
+                  "title": "Some another chapter"
+                }
+              }
+  post:
+
+/videos:
+  /featured:
     get:
       responses:
         200:
           body:
             application/json:
               example: |
-                {
-                  "id": 123,
-                  "title": "Some chapter",
-                  "description": "HTML description.",
-                  "videos": [
-                    {
-                      "id": 153,
-                      "title": "Some chapter",
-                      "author": {
-                        "id": 1325,
-                        "name": "Lord Voldemort",
-                        "reputation": 10000,
-                        "avatarUrl": "http://someurl.com/img.png"
-                      },
-                      "youtubeId": "13kbnrfv01",
-                      "votes": -3,
-                      "myVote": "up"
-                    }
-                  ]
-                }
-    post:
-
-  /videos/{videoId}:
+                [
+                  {
+                    "id": 153,
+                    "title": "Some chapter",
+                    "author": {
+                      "id": 1325,
+                      "name": "Lord Voldemort",
+                      "reputation": 10000,
+                      "avatarUrl": "http://someurl.com/img.png"
+                    },
+                    "youtubeId": "13kbnrfv01",
+                    "votes": -3,
+                    "myVote": "up"
+                  }
+                ]
+  /{videoId}:
     get:
       responses:
         200:
@@ -98,7 +165,9 @@ types:
                   },
                   "youtubeId": "13kbnrfv01",
                   "votes": -3,
-                  "myVote": "up"
+                  "myVote": "up",
+                  "description": "HTML description.",
+                  "disqusPageId": "12141"
                 }
 
     /upvote:
@@ -114,4 +183,53 @@ types:
           401:
           403:
 
-  
+/authors/{authorId}:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 1325,
+                "name": "Lord Voldemort",
+                "reputation": 10000,
+                "avatarUrl": "http://someurl.com/img.png",
+                "videos": [
+                  {
+                    "id": 153,
+                    "title": "Some chapter",
+                    "youtubeId": "13kbnrfv01",
+                    "votes": -3,
+                    "myVote": "up"
+                  }
+                ]
+              }
+  /follow:
+    post:
+      responses:
+        200:
+        401:
+        403:
+  /unfollow:
+    post:
+      responses:
+        200:
+        401:
+        403:
+/users:
+  /create-account-google-auth:
+    post:
+      queryParameters:
+        client_id:
+        client_secret:
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            device_id:
+            googleIdToken:
+              type: string
+              description: A valid Google ID token.
+            userType:
+              description: "'student', 'teacher' or 'other'"
+              type: string
