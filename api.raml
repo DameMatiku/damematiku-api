@@ -32,6 +32,7 @@ securitySchemes:
                     Bad OAuth request (wrong consumer key, bad nonce, expired
                     timestamp...). Unfortunately, re-authenticating the user won't help here.
     settings:
+      authorizationUri: https://api.damematiku.cz/{version}/oauth2/authorize
       accessTokenUri: https://api.damematiku.cz/{version}/oauth2/token
       authorizationGrants: [ token ]
 
@@ -49,8 +50,8 @@ securitySchemes:
           application/json:
             example: |
               {
-                access_token: "asdlkjadlkajsdkahsjdnaksdjasldkjasdlaskjdals",
-                expires: 213556
+                "access_token": "asdlkjadlkajsdkahsjdnaksdjasldkjasdlaskjdals",
+                "expires": 213556
               }
       400:
         description: Authenticatin failed
@@ -65,7 +66,7 @@ securitySchemes:
               [
                 {
                   "id": "zs",
-                  "title": "ZS",
+                  "name": "ZS",
                   "subtags": []
                 }
               ]
@@ -86,18 +87,18 @@ securitySchemes:
                 {
                   "type": "section",
                   "id": 12,
-                  "title": "Section 1",
+                  "name": "Section 1",
                   "chapters": [
                     {
                       "id": 124,
-                      "title": "Some chapter"
+                      "name": "Some chapter"
                     }
                   ]
                 },
                 {
                   "type": "chapter",
                   "id": 123,
-                  "title": "Chapter about 'search query'"
+                  "name": "Chapter about 'search query'"
                 }
               ]
 
@@ -106,7 +107,7 @@ securitySchemes:
     queryParameters:
       tags:
         description: Selected tags to filter by
-        type: array
+        type: string
         required: false
     responses:
       200:
@@ -116,11 +117,11 @@ securitySchemes:
               [
                 {
                   "id": 12,
-                  "title": "Section 1",
+                  "name": "Section 1",
                   "chapters": [
                     {
                       "id": 124,
-                      "title": "Some chapter"
+                      "name": "Some chapter"
                     }
                   ]
                 }
@@ -134,12 +135,12 @@ securitySchemes:
             example: |
               {
                 "id": 123,
-                "title": "Some chapter",
+                "name": "Some chapter",
                 "description": "HTML description.",
                 "videos": [
                   {
                     "id": 153,
-                    "title": "Some chapter",
+                    "name": "Some chapter",
                     "author": {
                       "id": 1325,
                       "name": "Lord Voldemort",
@@ -158,14 +159,14 @@ securitySchemes:
                 },
                 "nextChapter": {
                   "id": 124,
-                  "title": "Another chapter"
+                  "name": "Another chapter"
                 },
                 "previousChapter": {
                   "id": 125,
-                  "title": "Some another chapter"
+                  "name": "Some another chapter"
                 }
               }
-  post:
+#  post:
 
 /videos:
   /featured:
@@ -178,7 +179,7 @@ securitySchemes:
                 [
                   {
                     "id": 153,
-                    "title": "Some chapter",
+                    "name": "Some chapter",
                     "author": {
                       "id": 1325,
                       "name": "Lord Voldemort",
@@ -199,7 +200,7 @@ securitySchemes:
               example: |
                 {
                   "id": 153,
-                  "title": "Some chapter",
+                  "name": "Some chapter",
                   "author": {
                     "id": 1325,
                     "name": "Lord Voldemort",
@@ -241,7 +242,7 @@ securitySchemes:
                 "videos": [
                   {
                     "id": 153,
-                    "title": "Some chapter",
+                    "name": "Some chapter",
                     "youtubeId": "13kbnrfv01",
                     "votes": -3,
                     "myVote": "up"
