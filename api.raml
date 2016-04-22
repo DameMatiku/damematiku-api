@@ -2,16 +2,40 @@
 title: DámeMatiku
 version: v1
 baseUri: http://api.damematiku.cz
-types:
-  TestType:
-    type: object
-    properties:
-      id: number
-      optional?: string
-      expanded:
-        type: object
-        properties:
-          count: number
+
+securitySchemes:
+  oauth_2_0:
+    description: |
+        Dropbox supports OAuth 2.0 for authenticating all API requests.
+    type: OAuth 2.0
+    describedBy:
+        headers:
+            Authorization:
+                description: |
+                   Used to send a valid OAuth 2 access token. Do not use
+                   with the "access_token" query string parameter.
+                type: string
+        queryParameters:
+            access_token:
+                description: |
+                   Used to send a valid OAuth 2 access token. Do not use together with
+                   the "Authorization" header
+                type: string
+        responses:
+            401:
+                description: |
+                    Bad or expired token. This can happen if the user or the site
+                    revoked or expired an access token. To fix, you should re-
+                    authenticate the user.
+            403:
+                description: |
+                    Bad OAuth request (wrong consumer key, bad nonce, expired
+                    timestamp...). Unfortunately, re-authenticating the user won't help here.
+    settings:
+      authorizationUri: http://www.damematiku.cz/1/oauth2/authorize
+      accessTokenUri: https://api.damematiku.cz/1/oauth2/token
+      authorizationGrants: [ code, token ]
+
 /tags:
   get:
     responses:
@@ -217,6 +241,7 @@ types:
         200:
         401:
         403:
+
 /users:
   /create-account-google-auth:
     post:
