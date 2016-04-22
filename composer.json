@@ -1,0 +1,6 @@
+{
+    "require": {
+        "symfony/symfony": "2.7",
+        "creads/api2symfony-bundle": "^1.0"
+    }
+}
