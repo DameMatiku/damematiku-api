@@ -1,0 +1,117 @@
+#%RAML 1.0
+title: DámeMatiku
+version: v1
+baseUri: http://api.damematiku.cz
+types:
+  TestType:
+    type: object
+    properties:
+      id: number
+      optional?: string
+      expanded:
+        type: object
+        properties:
+          count: number
+/tags:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": "zs",
+                  "title": "ZS",
+                  "subtags": []
+                }
+              ]
+
+/subjects/{subjectId}/sections:
+  get:
+    queryParameters:
+      tags:
+        description: Selected tags to filter by
+        type: array
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": 12,
+                  "title": "Section 1",
+                  "chapters": [
+                    {
+                      "id": 124,
+                      "title": "Some chapter"
+                    }
+                  ]
+                }
+              ]
+  /chapters/{chapterId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 123,
+                  "title": "Some chapter",
+                  "description": "HTML description.",
+                  "videos": [
+                    {
+                      "id": 153,
+                      "title": "Some chapter",
+                      "author": {
+                        "id": 1325,
+                        "name": "Lord Voldemort",
+                        "reputation": 10000,
+                        "avatarUrl": "http://someurl.com/img.png"
+                      },
+                      "youtubeId": "13kbnrfv01",
+                      "votes": -3,
+                      "myVote": "up"
+                    }
+                  ]
+                }
+    post:
+
+  /videos/{videoId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 153,
+                  "title": "Some chapter",
+                  "author": {
+                    "id": 1325,
+                    "name": "Lord Voldemort",
+                    "reputation": 10000,
+                    "avatarUrl": "http://someurl.com/img.png"
+                  },
+                  "youtubeId": "13kbnrfv01",
+                  "votes": -3,
+                  "myVote": "up"
+                }
+
+    /upvote:
+      post:
+        responses:
+          200:
+          401:
+          403:
+    /downvote:
+      post:
+        responses:
+          200:
+          401:
+          403:
+
+  
