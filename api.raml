@@ -1,7 +1,7 @@
 #%RAML 1.0
 title: DámeMatiku
 version: v1
-baseUri: http://api.damematiku.cz
+baseUri: http://api.damematiku.cz/{version}
 
 securitySchemes:
   oauth_2_0:
@@ -32,9 +32,28 @@ securitySchemes:
                     Bad OAuth request (wrong consumer key, bad nonce, expired
                     timestamp...). Unfortunately, re-authenticating the user won't help here.
     settings:
-      authorizationUri: http://www.damematiku.cz/1/oauth2/authorize
-      accessTokenUri: https://api.damematiku.cz/1/oauth2/token
-      authorizationGrants: [ code, token ]
+      accessTokenUri: https://api.damematiku.cz/{version}/oauth2/token
+      authorizationGrants: [ token ]
+
+/oauth2/token:
+  get:
+    queryParameters:
+      grant_type:
+        type: string
+      googleIdToken:
+        type: string
+    responses:
+      200:
+        description: Authention went OK
+        body:
+          application/json:
+            example: |
+              {
+                access_token: "asdlkjadlkajsdkahsjdnaksdjasldkjasdlaskjdals",
+                expires: 213556
+              }
+      400:
+        description: Authenticatin failed
 
 /tags:
   get:
