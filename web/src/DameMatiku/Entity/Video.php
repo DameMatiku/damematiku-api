@@ -7,6 +7,10 @@ class Video extends Entity
 	/** @var DameMatiku\Entity\User Author of the video */
 	protected $user;
 
+	/** @var string Chapter id */
+	protected $chapterId;
+
+
 	/** @var string YouTube video id */
 	protected $youtubeId;
 
@@ -27,6 +31,16 @@ class Video extends Entity
 	public function setUser($user)
 	{
 		$this->user = $user;
+	}
+
+	public function getChapterId()
+	{
+		return $this->chapterId;
+	}
+
+	public function setChapterId($chapterId)
+	{
+		$this->chapterId = $chapterId;
 	}
 
 	public function getYoutubeId()

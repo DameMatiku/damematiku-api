@@ -11,3 +11,4 @@ $app->get('/tags', 'DameMatiku\Controller\TagsController::indexAction');
 $app->get('/subjects', 'DameMatiku\Controller\SubjectsController::indexAction');
 $app->get('/subjects/{subjectId}/sections', 'DameMatiku\Controller\SubjectsController::sectionsAction');
 $app->get('/chapters/{chapterId}', 'DameMatiku\Controller\ChaptersController::indexAction');
+$app->get('/videos/{videoId}', 'DameMatiku\Controller\VideosController::indexAction');

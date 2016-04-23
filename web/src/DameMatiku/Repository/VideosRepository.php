@@ -39,12 +39,21 @@ class VideosRepository extends BaseRepository
         $video = new Video();
         $video->setId($data['id']);
         $video->setDescription($data['description']);
+        $video->setChapterId($data['chapter_id']);
         $video->setYoutubeId($data['youtube_id']);
         $video->setUser($user);
         return $video;
     }
 
     public function findAllForChapter($chapterId, $userId) {
+        return $this->findAllDetailed([ 'chapter_id' => $chapterId ], $userId);
+    }
+
+    public function findDetail($videoId, $userId) {
+        return $this->findAllDetailed([ 'id' => $videoId ], $userId)[0];
+    }
+
+    protected function findAllDetailed($conditions, $userId) {
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
             ->select('vi.*, SUM(vo.value) AS votes')
@@ -53,7 +62,6 @@ class VideosRepository extends BaseRepository
             ->orderBy('SUM(vo.value)')
             ->groupBy('vi.id');
 
-        $conditions = [ 'chapter_id' => $chapterId ];
         $parameters = [];
         foreach ($conditions as $key => $value) {
             $parameters[':' . $key] = $value;
