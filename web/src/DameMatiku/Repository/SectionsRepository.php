@@ -45,7 +45,36 @@ class SectionsRepository extends BaseRepository
         return $section;
     }
 
-    public function findAllBySubjectId($subjectId) {
-        return $this->findAll([ 'subject_id' => $subjectId ], [ 'sequence' => 'ASC']);
+    public function findAllBySubjectId($subjectId, $tagIds = []) {
+
+        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder
+            ->select('c.*')
+            ->from($this->table, 'c');
+
+        if (empty($tagIds)) {
+            $queryBuilder->where('c.subject_id', $subjectId);
+        } else {
+            $queryBuilder->where('c.subject_id = ? AND t.tag_id IN (?)')
+                ->innerJoin('c', 'tag_section', 't', 'c.id = t.section_id');
+            $queryBuilder->setParameters([
+                $subjectId,
+                $tagIds
+            ], [
+                \PDO::PARAM_INT,
+                Connection::PARAM_INT_ARRAY
+            ]);
+        }
+
+        $queryBuilder->orderBy('c.sequence', 'ASC');
+
+        $statement = $queryBuilder->execute();
+        $data = $statement->fetchAll();
+
+        $entities = [];
+        foreach ($data as $row) {
+            $entities[] = $this->build($row);
+        }
+        return $entities;
     }
 }

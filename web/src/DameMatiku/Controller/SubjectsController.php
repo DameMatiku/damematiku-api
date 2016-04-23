@@ -23,8 +23,10 @@ class SubjectsController extends BaseController
     }
 
     public function sectionsAction(Request $request, Application $app, $subjectId) {
+        $tagIds = $app['request']->get('tags');
+
         $subject = $app['repository.subject']->find($subjectId);
-        $sections = $app['repository.section']->findAllBySubjectId($subjectId);
+        $sections = $app['repository.section']->findAllBySubjectId($subjectId, $tagIds);
         $result = array_values(array_map(function (Section $section) {
             return [
                 "id" => $section->getId(),
