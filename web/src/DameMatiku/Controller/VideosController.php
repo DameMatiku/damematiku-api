@@ -8,7 +8,7 @@ use DameMatiku\Entity\Video;
 
 class VideosController extends BaseController
 {
-    public function indexAction(Request $request, Application $app, $videoId)
+    public function indexAction(Application $app, $videoId)
     {
         $user = $this->getUser($app);
         $video = $app['repository.video']->findDetail($videoId, $user->getId());
@@ -33,6 +33,24 @@ class VideosController extends BaseController
             "disqusPageId" => $this->getDisqusId($video)
         ];
         return $app->json($result);
+    }
+
+    public function upvoteAction(Application $app, $videoId) {
+        $user = $this->getUser($app);
+        $video = $app['repository.video']->upvote($videoId, $user->getId());
+        return $app->json($this->getSuccess());
+    }
+
+    public function downvoteAction(Application $app, $videoId) {
+        $user = $this->getUser($app);
+        $video = $app['repository.video']->downvote($videoId, $user->getId());
+        return $app->json($this->getSuccess());
+    }
+
+    public function resetVoteAction(Application $app, $videoId) {
+        $user = $this->getUser($app);
+        $video = $app['repository.video']->resetVote($videoId, $user->getId());
+        return $app->json($this->getSuccess());
     }
 
     private function getDisqusId($video) {

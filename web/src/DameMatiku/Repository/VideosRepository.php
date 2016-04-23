@@ -4,6 +4,7 @@ namespace DameMatiku\Repository;
 
 use Doctrine\DBAL\Connection;
 use DameMatiku\Entity\Video;
+use DameMatiku\Entity\Vote;
 
 /**
  * Video repository
@@ -103,5 +104,50 @@ class VideosRepository extends BaseRepository
             $entities[] = $video;
         }
         return $entities;
+    }
+
+    public function upvote($videoId, $userId) {
+        $this->setVoteValue($videoId, $userId, 1);
+    }
+
+    public function downvote($videoId, $userId) {
+        $this->setVoteValue($videoId, $userId, -1);
+    }
+
+    public function resetVote($videoId, $userId) {
+        $this->setVoteValue($videoId, $userId, 0);
+    }
+
+    protected function setVoteValue($videoId, $userId, $value) {
+        $vote = $this->getVote($videoId, $userId);
+
+        if ($vote === NULL) {
+            $vote = $this->createVote($videoId, $userId, $value);
+        } else {
+            $vote->setValue($value);
+        }
+
+        $this->votesRepository->save($vote);
+    }
+
+    protected function createVote($videoId, $userId, $value) {
+        $vote = new Vote();
+        $vote->setVideoId($videoId);
+        $vote->setUserId($userId);
+        $vote->setValue($value);
+        return $vote;
+    }
+
+    protected function getVote($videoId, $userId) {
+        $votes = $this->votesRepository->findAll([
+            'video_id' => $videoId,
+            'user_id' => $userId
+        ]);
+
+        if (count($votes) > 0) {
+            return $votes[0];
+        } else {
+            return NULL;
+        }
     }
 }

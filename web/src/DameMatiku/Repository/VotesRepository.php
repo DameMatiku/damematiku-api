@@ -29,4 +29,21 @@ class VotesRepository extends BaseRepository
 
         return $user;
     }
+
+    public function save($vote) {
+        $data = [
+            'user_id' => $vote->getUserId(),
+            'video_id' => $vote->getVideoId(),
+            'value' => $vote->getValue(),
+            'voted_on' => $vote->getVotedOn(),
+        ];
+        if ($vote->getId()) {
+            $this->db->update($this->table, $data, [ 'id' => $vote->getId() ]);
+        } else {
+            $this->db->insert($this->table, $data);
+            // Get the id of the newly created record and set it on the entity.
+            $id = $this->db->lastInsertId();
+            $vote->setId($id);
+        }
+    }
 }
