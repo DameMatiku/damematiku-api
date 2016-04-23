@@ -4,11 +4,11 @@ namespace DameMatiku\Entity;
 
 class Vote extends Entity
 {
-	/** @var DameMatiku\Entity\Video Video voted on */
-	protected $video;
+	/** @var int Id of the video voted on */
+	protected $videoId;
 
-	/** @var DameMatiku\Entity\User Author of the video */
-	protected $user;
+	/** @var int Id of the author of the video */
+	protected $userId;
 
 	/** @var int Value, +1 or -1 */
 	protected $value;
@@ -16,24 +16,24 @@ class Vote extends Entity
 	/** @var DateTime Voted on */
 	protected $votedOn;
 
-	public function getVideo()
+	public function getVideoId()
 	{
-		return $this->video;
+		return $this->videoId;
 	}
 
-	public function setVideo($video)
+	public function setVideoId($videoId)
 	{
-		$this->video = $video;
+		$this->videoId = $videoId;
 	}
 
-	public function getUser()
+	public function getUserId()
 	{
-		return $this->user;
+		return $this->userId;
 	}
 
-	public function setUser($user)
+	public function setUserId($userId)
 	{
-		$this->user = $user;
+		$this->userId = $userId;
 	}
 
 	public function getValue()

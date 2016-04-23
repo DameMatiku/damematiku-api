@@ -27,8 +27,8 @@ class ChaptersController extends BaseController
                         "avatarUrl"  => $video->getUser()->getAvatarUrl()
                     ],
                     "youtubeId" => $video->getYoutubeId(),
-//                    "votes"     => $video->getVotes(),
-//                    "myVote"    => $video->getMyVote()
+                    "votes"     => $video->getVotes(),
+                    "myVote"    => $video->getMyVote()
                 ];
             }, $chapter->getVideos())),
             "sponsor"     => $chapter->getSponsor(),

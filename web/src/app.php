@@ -2,12 +2,16 @@
 
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 
+$app['repository.vote'] = $app->share(function ($app) {
+    return new DameMatiku\Repository\VotesRepository($app['db']);
+});
+
 $app['repository.user'] = $app->share(function ($app) {
     return new DameMatiku\Repository\UsersRepository($app['db']);
 });
 
 $app['repository.video'] = $app->share(function ($app) {
-    return new DameMatiku\Repository\VideosRepository($app['db'], $app['repository.user']);
+    return new DameMatiku\Repository\VideosRepository($app['db'], $app['repository.user'], $app['repository.vote']);
 });
 
 $app['repository.tag'] = $app->share(function ($app) {

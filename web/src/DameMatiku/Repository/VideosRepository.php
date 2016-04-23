@@ -12,13 +12,17 @@ class VideosRepository extends BaseRepository
 {
     protected $table = "video";
 
-    /** @var DameMatiku\Repository\UserRepository */
+    /** @var DameMatiku\Repository\UsersRepository */
     protected $usersRepository;
 
-    public function __construct(Connection $db, $usersRepository)
+    /** @var DameMatiku\Repository\VotesRepository */
+    protected $votesRepository;
+
+    public function __construct(Connection $db, $usersRepository, $votesRepository)
     {
         $this->db = $db;
         $this->usersRepository = $usersRepository;
+        $this->votesRepository = $votesRepository;
     }
 
     /**
@@ -40,7 +44,56 @@ class VideosRepository extends BaseRepository
         return $video;
     }
 
-    public function findAllByChapterId($chapterId) {
-        return $this->findAll([ 'chapter_id' => $chapterId ]);
+    public function findAllForChapter($chapterId, $userId) {
+        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder
+            ->select('vi.*, SUM(vo.value) AS votes')
+            ->from($this->table, 'vi')
+            ->leftJoin('vi', 'vote', 'vo', 'vi.id = vo.video_id')
+            ->orderBy('SUM(vo.value)')
+            ->groupBy('vi.id');
+
+        $conditions = [ 'chapter_id' => $chapterId ];
+        $parameters = [];
+        foreach ($conditions as $key => $value) {
+            $parameters[':' . $key] = $value;
+            $where = $queryBuilder->expr()->eq('vi.' . $key, ':' . $key);
+            $queryBuilder->andWhere($where);
+        }
+        $queryBuilder->setParameters($parameters);
+        
+        $statement = $queryBuilder->execute();
+        $data = $statement->fetchAll();
+
+        // potentially slow part when user voted 10,000 times :-P
+        $votes = $this->votesRepository->findAll([ 'user_id' => $userId ]);
+        $votesByVideoId = [];
+        foreach ($votes as $vote) {
+            $votesByVideoId[$vote->getVideoId()] = $vote;
+        }
+
+        $entities = [];
+        foreach ($data as $row) {
+            $video = $this->build($row);
+            $video->setVotes($row['votes'] ? $row['votes'] : 0);
+
+            // find out how the user voted - -1, 0 or +1
+            $myVote = 0;
+            if (isset($votesByVideoId[$video->getId()])) {
+                $myVote = $votesByVideoId[$video->getId()]->getValue();
+            
+                if ($myVote != 0) {
+                    if ($myVote > 0) {
+                        $myVote = 1;
+                    } else {
+                        $myVote = -1;
+                    }
+                }
+            }
+            $video->setMyVote($myVote);
+
+            $entities[] = $video;
+        }
+        return $entities;
     }
 }

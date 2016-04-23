@@ -67,7 +67,7 @@ class ChaptersRepository extends BaseRepository
             }
         }
         
-        $videos = $this->videosRepository->findAllByChapterId($chapterId);
+        $videos = $this->videosRepository->findAllForChapter($chapterId, $userId);
 
         $chapter->setVideos($videos);
 
