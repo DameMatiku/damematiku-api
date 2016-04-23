@@ -1,2 +1,2 @@
 # API
-RAML specification and implementation in PHP, Symfony framework.
+RAML specification and implementation in PHP, Silex framework.
