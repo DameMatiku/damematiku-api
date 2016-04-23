@@ -14,6 +14,9 @@ $app->post('/oauth2/token', 'authbucket_oauth2.oauth2_controller:tokenAction')
 // tags
 $app->get('/tags', 'DameMatiku\Controller\TagsController::indexAction');
 
+// search
+$app->get('/search', 'DameMatiku\Controller\SearchController::indexAction');
+
 // subjects
 $app->get('/subjects', 'DameMatiku\Controller\SubjectsController::indexAction');
 $app->get('/subjects/{subjectId}/sections', 'DameMatiku\Controller\SubjectsController::sectionsAction');

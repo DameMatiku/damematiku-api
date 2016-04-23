@@ -49,6 +49,24 @@ class BaseRepository
     }
 
     /**
+     * Search in names of entities
+     * @param  string $query
+     * @return array  Array of corresponding entities
+     */
+    public function search($query) {
+        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder
+            ->select('c.*')
+            ->from($this->table, 'c');
+
+        $queryBuilder->where("c.`name` LIKE :query");
+        $queryBuilder->setParameter(':query', "%$query%");
+        $queryBuilder->orderBy('c.sequence', 'ASC');
+
+        return $this->queryBuilderToEntities($queryBuilder);
+    }
+
+    /**
      * Returns an entity matching the supplied id.
      * @param integer $id
      * @return object|false An entity object if found, false otherwise.
@@ -91,6 +109,14 @@ class BaseRepository
             $queryBuilder->setMaxResults($limit);
         }
         
+        return $this->queryBuilderToEntities($queryBuilder);
+    }
+
+    protected function build($data) {
+        throw new NotImplementedException;
+    }
+
+    protected function queryBuilderToEntities($queryBuilder) {
         $statement = $queryBuilder->execute();
         $data = $statement->fetchAll();
 
@@ -99,9 +125,5 @@ class BaseRepository
             $entities[] = $this->build($row);
         }
         return $entities;
-    }
-
-    protected function build($data) {
-        throw new NotImplementedException;
     }
 }
