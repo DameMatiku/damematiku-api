@@ -66,12 +66,20 @@ class BaseRepository
      *   Optionally, the order by info, in the $column => $direction format.
      * @return array A collection of entity objects.
      */
-    public function findAll($limit = NULL, $offset = 0, $orderBy = []) {
+    public function findAll($conditions = [], $orderBy = [], $limit = NULL, $offset = 0) {
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder
             ->select('c.*')
             ->from($this->table, 'c')
             ->setFirstResult($offset);
+
+        $parameters = [];
+        foreach ($conditions as $key => $value) {
+            $parameters[':' . $key] = $value;
+            $where = $queryBuilder->expr()->eq('c.' . $key, ':' . $key);
+            $queryBuilder->andWhere($where);
+        }
+        $queryBuilder->setParameters($parameters);
 
         if (count($orderBy) > 0) {
             foreach ($orderBy as $key => $value) {

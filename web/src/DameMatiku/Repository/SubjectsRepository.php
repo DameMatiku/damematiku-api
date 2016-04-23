@@ -2,7 +2,6 @@
 
 namespace DameMatiku\Repository;
 
-use Doctrine\DBAL\Connection;
 use DameMatiku\Entity\Subject;
 
 /**

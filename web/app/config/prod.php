@@ -17,4 +17,5 @@ $app['db.options'] = array(
     'dbname'   => 'damematiku',
     'user'     => 'damematiku',
     'password' => 'eE8gSLpD',
+    'charset'  => 'utf8',
 );

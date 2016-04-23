@@ -8,4 +8,4 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/subjects', 'DameMatiku\Controller\SubjectsController::indexAction');
-$app->get('/subjects/{subjectId}/sections', 'DameMatiku\Controller\SectionsController::indexAction');
+$app->get('/subjects/{subjectId}/sections', 'DameMatiku\Controller\SubjectsController::sectionsAction');

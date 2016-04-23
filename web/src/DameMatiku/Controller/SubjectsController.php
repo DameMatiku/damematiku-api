@@ -5,6 +5,8 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 use DameMatiku\Entity\Subject;
+use DameMatiku\Entity\Section;
+use DameMatiku\Entity\Chapter;
 
 class SubjectsController extends BaseController
 {
@@ -17,6 +19,24 @@ class SubjectsController extends BaseController
         		"name" => $entity->getName()
         	];
         }, $subjects));
+        return $app->json($result);
+    }
+
+    public function sectionsAction(Request $request, Application $app, $subjectId) {
+        $subject = $app['repository.subject']->find($subjectId);
+        $sections = $app['repository.section']->findAllBySubjectId($subjectId);
+        $result = array_values(array_map(function (Section $section) {
+            return [
+                "id" => $section->getId(),
+                "name" => $section->getName(),
+                "chapters" => array_values(array_map(function (Chapter $chapter) {
+                    return [
+                        "id" => $chapter->getId(),
+                        "name" => $chapter->getName()
+                    ];
+                }, $section->getChapters()))
+            ];
+        }, $sections));
         return $app->json($result);
     }
 }
