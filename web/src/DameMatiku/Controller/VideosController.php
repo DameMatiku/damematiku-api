@@ -35,6 +35,13 @@ class VideosController extends BaseController
         return $app->json($result);
     }
 
+    // @todo - connect route and finish the model method
+    public function featuredAction(Application $app) {
+        $user = $this->getUser($app);
+        $video = $app['repository.video']->featured($user->getId());
+        return $app->json($this->getSuccess());
+    }
+
     public function upvoteAction(Application $app, $videoId) {
         $user = $this->getUser($app);
         $video = $app['repository.video']->upvote($videoId, $user->getId());

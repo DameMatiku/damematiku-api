@@ -60,7 +60,7 @@ class VideosRepository extends BaseRepository
             ->select('vi.*, SUM(vo.value) AS votes')
             ->from($this->table, 'vi')
             ->leftJoin('vi', 'vote', 'vo', 'vi.id = vo.video_id')
-            ->orderBy('SUM(vo.value)')
+            ->orderBy('SUM(vo.value)', 'DESC')
             ->groupBy('vi.id');
 
         $parameters = [];
