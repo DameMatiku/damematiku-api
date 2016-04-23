@@ -19,3 +19,5 @@ $app['db.options'] = array(
     'password' => 'eE8gSLpD',
     'charset'  => 'utf8',
 );
+
+$app['avatar.default'] = "https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png";

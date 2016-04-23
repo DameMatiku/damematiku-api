@@ -12,6 +12,14 @@ class UsersRepository extends BaseRepository
 {
     protected $table = "user";
 
+    /** @var string defaultAvatarUrl */
+    protected $defaultAvatarUrl;
+
+    public function __construct(Connection $db, $defaultAvatarUrl) {
+        $this->db = $db;
+        $this->defaultAvatarUrl = $defaultAvatarUrl;
+    }
+
     /**
      * Instantiates a user entity and sets its properties using db data.
      * @param array $data
@@ -27,7 +35,11 @@ class UsersRepository extends BaseRepository
         $user->setGoogleUserId($data['google_user_id']);
         $user->setRegisteredOn($data['registered_on']);
         $user->setUserType($data['user_type']);
-        $user->setAvatarUrl($data['avatar_url']);
+        if (empty($data['avatar_url'])) {
+            $user->setAvatarUrl($this->defaultAvatarUrl);
+        } else {
+            $user->setAvatarUrl($data['avatar_url']);
+        }
 
         return $user;
     }

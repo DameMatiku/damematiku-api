@@ -7,6 +7,10 @@ $app->get('/', function () use ($app) {
     ]);
 });
 
+// OAuth 2.0
+$app->post('/oauth2/token', 'authbucket_oauth2.oauth2_controller:tokenAction')
+    ->bind('api_oauth2_token');
+
 // tags
 $app->get('/tags', 'DameMatiku\Controller\TagsController::indexAction');
 

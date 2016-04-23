@@ -26,6 +26,7 @@ class ChaptersController extends BaseController
 //                        "reputation" => $video->getUser()->getReputation(),
                         "avatarUrl"  => $video->getUser()->getAvatarUrl()
                     ],
+                    "description" => $video->getDescription(),
                     "youtubeId" => $video->getYoutubeId(),
                     "votes"     => $video->getVotes(),
                     "myVote"    => $video->getMyVote()
