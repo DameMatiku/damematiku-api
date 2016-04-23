@@ -2,7 +2,7 @@
 
 namespace DameMatiku\Entity;
 
-class Video extends NamedEntity
+class Video extends Entity
 {
 	/** @var DameMatiku\Entity\User Author of the video */
 	protected $user;
@@ -12,6 +12,12 @@ class Video extends NamedEntity
 
 	/** @var string HTML description */
 	protected $description;
+
+	/** @var int Total vote count */
+	protected $votes;
+
+	/** @var int How the current user (aka "me") voted on this video: +1, 0 or -1*/
+	protected $myVote;
 
 	public function getUser()
 	{
@@ -41,5 +47,25 @@ class Video extends NamedEntity
 	public function setDescription($description)
 	{
 		$this->description = $description;
+	}
+
+	public function getVotes()
+	{
+		return $this->votes;
+	}
+
+	public function setVotes($votes)
+	{
+		$this->votes = $votes;
+	}
+
+	public function getMyVote()
+	{
+		return $this->myVote;
+	}
+
+	public function setMyVote($myVote)
+	{
+		$this->myVote = $myVote;
 	}
 }

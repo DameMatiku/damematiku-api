@@ -2,6 +2,14 @@
 
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 
+$app['repository.user'] = $app->share(function ($app) {
+    return new DameMatiku\Repository\UsersRepository($app['db']);
+});
+
+$app['repository.video'] = $app->share(function ($app) {
+    return new DameMatiku\Repository\VideosRepository($app['db'], $app['repository.user']);
+});
+
 $app['repository.tag'] = $app->share(function ($app) {
     return new DameMatiku\Repository\TagsRepository($app['db']);
 });
@@ -11,7 +19,7 @@ $app['repository.subject'] = $app->share(function ($app) {
 });
 
 $app['repository.chapter'] = $app->share(function ($app) {
-    return new DameMatiku\Repository\ChaptersRepository($app['db']);
+    return new DameMatiku\Repository\ChaptersRepository($app['db'], $app['repository.user'], $app['repository.video']);
 });
 
 $app['repository.section'] = $app->share(function ($app) {

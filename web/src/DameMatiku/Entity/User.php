@@ -16,6 +16,9 @@ class User extends Entity
 	/** @var string Registered on */
 	protected $registeredOn;
 
+	/** @var string Avatar URL */
+	protected $avatarUrl;
+
 	/** @var string User type - student, teacher or other */
 	protected $userType;
 
@@ -71,5 +74,15 @@ class User extends Entity
 	public function setUserType($userType)
 	{
 		$this->userType = $userType;
+	}
+
+	public function getAvatarUrl()
+	{
+		return $this->avatarUrl;
+	}
+
+	public function setAvatarUrl($avatarUrl)
+	{
+		$this->avatarUrl = $avatarUrl;
 	}
 }
