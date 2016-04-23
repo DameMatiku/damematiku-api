@@ -6,17 +6,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 use DameMatiku\Entity\Subject;
 
-class SectionsController extends BaseController
+class SubjectsController extends BaseController
 {
-    public function indexAction(Request $request, Application $app, $subjectId)
+    public function indexAction(Request $request, Application $app)
     {
     	$subjects = $app['repository.subject']->findAll();
-        $result = array_map(function (Subject $entity) {
+        $result = array_values(array_map(function (Subject $entity) {
         	return [
         		"id" => $entity->getId(),
         		"name" => $entity->getName()
         	];
-        });
+        }, $subjects));
         return $app->json($result);
     }
 }

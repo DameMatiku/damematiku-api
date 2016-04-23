@@ -102,13 +102,8 @@ securitySchemes:
                 }
               ]
 
-/subjects/{subjectId}/sections:
+/subjects:
   get:
-    queryParameters:
-      tags:
-        description: Selected tags to filter by
-        type: string
-        required: false
     responses:
       200:
         body:
@@ -117,15 +112,33 @@ securitySchemes:
               [
                 {
                   "id": 12,
-                  "name": "Section 1",
-                  "chapters": [
-                    {
-                      "id": 124,
-                      "name": "Some chapter"
-                    }
-                  ]
+                  "name": "Subject 1"
                 }
               ]
+  /{subjectId}/sections:
+    get:
+      queryParameters:
+        tags:
+          description: Selected tags to filter by
+          type: string
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "id": 12,
+                    "name": "Section 1",
+                    "chapters": [
+                      {
+                        "id": 124,
+                        "name": "Some chapter"
+                      }
+                    ]
+                  }
+                ]
 /chapters/{chapterId}:
   get:
     responses:

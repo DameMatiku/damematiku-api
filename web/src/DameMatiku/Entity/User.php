@@ -16,6 +16,9 @@ class User extends Entity
 	/** @var string Registered on */
 	protected $registeredOn;
 
+	/** @var string User type - student, teacher or other */
+	protected $userType;
+
 	public function getFirstName()
 	{
 		return $this->firstName;

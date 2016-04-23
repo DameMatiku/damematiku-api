@@ -13,7 +13,7 @@ $app['site_email'] = 'marek.lisy@vcelka.cz';
 // Doctrine (db)
 $app['db.options'] = array(
     'driver'   => 'pdo_mysql',
-    'host'     => ' uvds199.active24.cz',
+    'host'     => 'uvds199.active24.cz',
     'dbname'   => 'damematiku',
     'user'     => 'damematiku',
     'password' => 'eE8gSLpD',

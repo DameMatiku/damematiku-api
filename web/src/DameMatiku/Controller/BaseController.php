@@ -1,5 +1,7 @@
 <?php
 
+namespace DameMatiku\Controller;
+
 use Silex\Application;
 
 class BaseController
